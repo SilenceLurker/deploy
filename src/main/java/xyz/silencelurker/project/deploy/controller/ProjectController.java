@@ -16,8 +16,8 @@ import xyz.silencelurker.project.deploy.service.IProjectService;
 @RequestMapping("/project")
 public class ProjectController {
 
-    // @Resource
-    // private IProjectService projectService;
+    @Resource
+    private IProjectService projectService;
 
     public ResponseEntity<?> helloWorld() {
         return ResponseEntity.ok("Hello World!");
