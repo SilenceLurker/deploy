@@ -4,6 +4,7 @@ import java.util.List;
 
 import xyz.silencelurker.project.deploy.entity.account.AdminAccount;
 import xyz.silencelurker.project.deploy.entity.account.BaseAccountInfo;
+import xyz.silencelurker.project.deploy.entity.account.WorkAccount;
 
 /**
  * @author Silence_Lurker
@@ -66,5 +67,21 @@ public interface IAccountInfoService {
      * @return
      */
     List<BaseAccountInfo> findAll();
+
+    /**
+     * 通过用户名搜索工作账号
+     * 
+     * @param username
+     * @return
+     */
+    WorkAccount findByWorkAccountUsername(String username);
+
+    /**
+     * 通过用户名搜索管理员
+     * 
+     * @param username
+     * @return
+     */
+    AdminAccount findByAdminAccountUsername(String username);
 
 }

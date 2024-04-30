@@ -148,4 +148,19 @@ public class IProjectServiceImpl implements IProjectService {
 
     }
 
+    @Override
+    public ProjectResponse getProjectResponse(String responseId) {
+        return projectResponseRepository.findById(responseId).orElse(null);
+    }
+
+    @Override
+    public ProjectResponse getProjectResponseByResponse(String response) {
+        return projectResponseRepository.findByResponse(response);
+    }
+
+    @Override
+    public void saveProjectResponse(ProjectResponse response) {
+        projectResponseRepository.save(response);
+    }
+
 }

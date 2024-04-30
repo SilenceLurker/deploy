@@ -103,4 +103,27 @@ public interface IProjectService {
      * @return
      */
     List<Project> getAllProjects(BaseAccountInfo searcher);
+
+    /**
+     * 通过id查询项目反馈
+     * 
+     * @param responseId
+     * @return
+     */
+    ProjectResponse getProjectResponse(String responseId);
+
+    /**
+     * 通过反馈内容查询反馈
+     * 
+     * @param response
+     * @return
+     */
+    ProjectResponse getProjectResponseByResponse(String response);
+
+    /**
+     * 保存反馈信息
+     * 
+     * @param response
+     */
+    void saveProjectResponse(ProjectResponse response);
 }

@@ -10,7 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
+import xyz.silencelurker.project.deploy.entity.account.BaseAccountInfo;
 
 /**
  * 项目状态反馈
@@ -25,6 +27,8 @@ public class ProjectResponse {
     private String id;
     private String response;
     private LocalDateTime responseTime;
+    @OneToOne
+    private BaseAccountInfo responseUser;
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;

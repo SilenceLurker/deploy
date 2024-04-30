@@ -82,4 +82,15 @@ public class IAccountInfoServiceImpl implements IAccountInfoService {
         return list;
     }
 
+    @Override
+    public WorkAccount findByWorkAccountUsername(String username) {
+        return workAccountInfoRepository.findByUsername(username).orElse(null);
+
+    }
+
+    @Override
+    public AdminAccount findByAdminAccountUsername(String username) {
+        return adminAccountInfoRepository.findByUsername(username).orElse(null);
+    }
+
 }
