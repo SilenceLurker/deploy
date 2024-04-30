@@ -12,6 +12,7 @@ import xyz.silencelurker.project.deploy.entity.account.WorkAccount;
 import xyz.silencelurker.project.deploy.repository.account.AdminAccountRepository;
 import xyz.silencelurker.project.deploy.repository.account.WorkAccountRepository;
 import xyz.silencelurker.project.deploy.service.IAccountInfoService;
+import xyz.silencelurker.project.deploy.service.tool.Md5Encode;
 
 /**
  * @author Silence_Lurker
@@ -26,17 +27,18 @@ public class IAccountInfoServiceImpl implements IAccountInfoService {
 
     @Override
     public BaseAccountInfo login(String username, String password) {
-        return workAccountInfoRepository.findByUsernameAndPassword(username, password).orElse(null);
+        return workAccountInfoRepository.findByUsernameAndPassword(username, Md5Encode.md5Encode(password)).orElse(null);
     }
 
     @Override
     public AdminAccount adminLogin(String username, String password) {
-        return adminAccountInfoRepository.findByUsernameAndPassword(username, password).orElse(null);
+        return adminAccountInfoRepository.findByUsernameAndPassword(username, Md5Encode.md5Encode(password)).orElse(null);
     }
 
     @Override
     public boolean register(BaseAccountInfo newAccount) {
         if (workAccountInfoRepository.findByUsername(newAccount.getUsername()).isEmpty()) {
+            newAccount.setPassword(Md5Encode.md5Encode(newAccount.getPassword()));
             workAccountInfoRepository.save((WorkAccount) newAccount);
             return true;
         }
@@ -46,6 +48,7 @@ public class IAccountInfoServiceImpl implements IAccountInfoService {
     @Override
     public boolean adminRegister(AdminAccount newAccount) {
         if (adminAccountInfoRepository.findByUsername(newAccount.getUsername()).isEmpty()) {
+            newAccount.setPassword(Md5Encode.md5Encode(newAccount.getPassword()));
             adminAccountInfoRepository.save(newAccount);
             return true;
         }
