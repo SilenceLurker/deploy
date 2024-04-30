@@ -122,6 +122,7 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/initAdminAccount")
     public ResponseEntity<?> initAdminAccount(AdminAccount newAdminAccount){
         if(accountInfoService.findAll().size() == 0){
             accountInfoService.adminRegister(newAdminAccount);
