@@ -4,7 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.Resource;
@@ -68,7 +70,7 @@ public class AccountController {
     public ResponseEntity<?> login(String username, String password, HttpServletResponse resp) {
         var account = accountInfoService.login(username, password);
 
-        Map<String, String> tokenInfo = new HashMap<>(3);
+        Map<String, String> tokenInfo = new HashMap<>(5);
 
         tokenInfo.put("id", account.getId());
         tokenInfo.put("username", username);
@@ -87,7 +89,7 @@ public class AccountController {
     public ResponseEntity<?> adminLogin(String username, String password, HttpServletResponse resp) {
         var account = accountInfoService.adminLogin(username, password);
 
-        Map<String, String> tokenInfo = new HashMap<>(3);
+        Map<String, String> tokenInfo = new HashMap<>(5);
 
         tokenInfo.put("id", account.getId());
         tokenInfo.put("username", username);
@@ -103,7 +105,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(WorkAccount newWorkAccount, @CookieValue String token) {
+    public ResponseEntity<?> register(@RequestBody WorkAccount newWorkAccount, @CookieValue String token) {
         if (checkAdminAccount(token)) {
             accountInfoService.register(newWorkAccount);
             return ResponseEntity.ok().build();
@@ -113,7 +115,7 @@ public class AccountController {
     }
 
     @PostMapping("/adminRegister")
-    public ResponseEntity<?> adminRegister(AdminAccount newAdminAccount, @CookieValue String token) {
+    public ResponseEntity<?> adminRegister(@RequestBody AdminAccount newAdminAccount, @CookieValue String token) {
         if (checkAdminAccount(token)) {
             accountInfoService.adminRegister(newAdminAccount);
             return ResponseEntity.ok().build();
@@ -123,7 +125,7 @@ public class AccountController {
     }
 
     @PostMapping("/initAdminAccount")
-    public ResponseEntity<?> initAdminAccount(AdminAccount newAdminAccount){
+    public ResponseEntity<?> initAdminAccount(@RequestBody AdminAccount newAdminAccount){
         if(accountInfoService.findAll().size() == 0){
             accountInfoService.adminRegister(newAdminAccount);
             return ResponseEntity.ok().build();
@@ -132,7 +134,7 @@ public class AccountController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> update(WorkAccount newWorkAccount, @CookieValue String token) {
+    public ResponseEntity<?> update(@RequestBody WorkAccount newWorkAccount, @CookieValue String token) {
         boolean sameAccount = (checkAccount(token)
                 && decodeToken(token).get("username").equals(newWorkAccount.getUsername()));
         if (sameAccount || checkAdminAccount(token)) {
@@ -144,7 +146,7 @@ public class AccountController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<?> delete(String id, @CookieValue String token) {
+    public ResponseEntity<?> delete(@RequestParam String id, @CookieValue String token) {
         if (checkAdminAccount(token)) {
             accountInfoService.delete(id);
             return ResponseEntity.ok().build();
