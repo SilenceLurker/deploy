@@ -122,6 +122,14 @@ public class AccountController {
         }
     }
 
+    public ResponseEntity<?> initAdminAccount(AdminAccount newAdminAccount){
+        if(accountInfoService.findAll().size() == 0){
+            accountInfoService.adminRegister(newAdminAccount);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/update")
     public ResponseEntity<?> update(WorkAccount newWorkAccount, @CookieValue String token) {
         boolean sameAccount = (checkAccount(token)
