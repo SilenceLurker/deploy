@@ -105,8 +105,9 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody WorkAccount newWorkAccount, @CookieValue String token) {
-        if (checkAdminAccount(token)) {
+    public ResponseEntity<?> register(WorkAccount newWorkAccount, @CookieValue String token) {
+        if (checkAdminAccount(token)
+                && accountInfoService.findByWorkAccountUsername(newWorkAccount.getUsername()) == null) {
             accountInfoService.register(newWorkAccount);
             return ResponseEntity.ok().build();
         } else {
@@ -115,8 +116,9 @@ public class AccountController {
     }
 
     @PostMapping("/adminRegister")
-    public ResponseEntity<?> adminRegister(@RequestBody AdminAccount newAdminAccount, @CookieValue String token) {
-        if (checkAdminAccount(token)) {
+    public ResponseEntity<?> adminRegister(AdminAccount newAdminAccount, @CookieValue String token) {
+        if (checkAdminAccount(token)
+                && accountInfoService.findByAdminAccountUsername(newAdminAccount.getUsername()) == null) {
             accountInfoService.adminRegister(newAdminAccount);
             return ResponseEntity.ok().build();
         } else {
@@ -125,8 +127,8 @@ public class AccountController {
     }
 
     @PostMapping("/initAdminAccount")
-    public ResponseEntity<?> initAdminAccount(@RequestBody AdminAccount newAdminAccount){
-        if(accountInfoService.findAll().size() == 0){
+    public ResponseEntity<?> initAdminAccount(AdminAccount newAdminAccount) {
+        if (accountInfoService.findAll().size() == 0) {
             accountInfoService.adminRegister(newAdminAccount);
             return ResponseEntity.ok().build();
         }
